@@ -131,7 +131,7 @@ kolla_sources:
     reference: 1.3.0
   magnum-base:
     type: git
-    location: https://github.com/stackhpc/magnum.git
+    location: https://github.com/scrungus/magnum.git
     reference: stackhpc/{{ openstack_release }}
   neutron-base:
     type: git
