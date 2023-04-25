@@ -1,7 +1,4 @@
 #!/bin/bash
-
-#!/bin/bash
-
 set -o errexit
 set -o pipefail
 
@@ -144,12 +141,12 @@ fi
 
 echo Downloading ubuntu k8s image
 
-#curl -L --fail -o ${IMAGE_PATH}/ubuntu-2004-kube-v1.25.5.qcow2 https://minio.services.osism.tech/openstack-k8s-capi-images/ubuntu-2004-kube-v1.25/ubuntu-2004-kube-v1.25.5.qcow2
-#$KOLLA_OPENSTACK_COMMAND image create ubuntu-2004-kube-v1.25.5 \
-#  --file ${IMAGE_PATH}/ubuntu-2004-kube-v1.25.5.qcow2 \
-#  --disk-format qcow2 \
-#  --container-format bare \
-#  --public
+curl -L --fail -o ${IMAGE_PATH}/ubuntu-2004-kube-v1.25.5.qcow2 https://minio.services.osism.tech/openstack-k8s-capi-images/ubuntu-2004-kube-v1.25/ubuntu-2004-kube-v1.25.5.qcow2
+$KOLLA_OPENSTACK_COMMAND image create ubuntu-2004-kube-v1.25.5 \
+  --file ${IMAGE_PATH}/ubuntu-2004-kube-v1.25.5.qcow2 \
+  --disk-format qcow2 \
+  --container-format bare \
+  --public
 $KOLLA_OPENSTACK_COMMAND image set ubuntu-2004-kube-v1.25.5 --os-distro ubuntu --os-version 20.04
 
 echo Creating flavor ds2G20 for ubuntu image
