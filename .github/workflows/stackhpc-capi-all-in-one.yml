@@ -75,6 +75,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
            submodules: true
+      
+      - name: install zip
+        run: |
+          sudo apt install -y zip unzip
 
       - name: Install terraform
         uses: hashicorp/setup-terraform@v2
@@ -123,6 +127,7 @@ jobs:
           OS_CLOUD: ${{ inputs.OS_CLOUD }}
           OS_APPLICATION_CREDENTIAL_ID: ${{ secrets.OS_APPLICATION_CREDENTIAL_ID }}
           OS_APPLICATION_CREDENTIAL_SECRET: ${{ secrets.OS_APPLICATION_CREDENTIAL_SECRET }}
+          TF_LOG: trace
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
