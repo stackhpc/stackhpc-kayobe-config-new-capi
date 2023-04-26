@@ -1,0 +1,32 @@
+---
+# Most development environments will use nested virtualisation, and we can't
+# guarantee that nested KVM support is available. Use QEMU as a lowest common
+# denominator.
+nova_compute_virt_type: qemu
+
+# Reduce the control plane's memory footprint by limiting the number of worker
+# processes to one per-service.
+openstack_service_workers: "1"
+openstack_service_rpc_workers: "1"
+
+docker_yum_baseurl: "{{ stackhpc_repo_docker_url }}"
+docker_yum_gpgkey: "https://download.docker.com/linux/centos/gpg"
+
+# Elasticsearch memory tuning
+es_heap_size: 1g
+
+# Increase Grafana timeout
+grafana_start_first_node_retries: 20
+
+##############################################################################
+# Octavia networking
+octavia_amp_network:
+  name: lb-mgmt-net
+  shared: false
+  subnet:
+    name: lb-mgmt-subnet
+    cidr: "{% raw %}{{ octavia_amp_network_cidr }}{% endraw %}"
+    allocation_pool_start: "10.1.0.100"
+    allocation_pool_end: "10.1.0.200"    
+    gateway_ip: "10.1.0.1"
+    enable_dhcp: yes
