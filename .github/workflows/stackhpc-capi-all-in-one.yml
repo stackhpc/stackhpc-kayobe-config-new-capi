@@ -65,7 +65,7 @@ jobs:
   # NOTE: Runner needs unzip and nodejs packages.
   all-in-one:
     name: All in one
-    runs-on: [self-hosted, stackhpc-kayobe-config-aio]
+    runs-on: self-hosted
     permissions: {}
     env:
       KAYOBE_ENVIRONMENT: ci-capi-aio
