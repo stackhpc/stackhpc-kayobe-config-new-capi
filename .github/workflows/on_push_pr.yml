@@ -9,7 +9,7 @@ name: Pull request
   pull_request:
   push:
     branches: 
-      - main
+      - 'stackhpc/yoga'
 jobs:
 
   build-kayobe-image:
