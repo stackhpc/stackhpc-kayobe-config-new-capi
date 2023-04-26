@@ -5,7 +5,7 @@
 name: All in one magnum
 
 on:
-  workflow_request:
+  workflow_dispatch:
     inputs:
       kayobe_image:
         description: Kayobe container image
