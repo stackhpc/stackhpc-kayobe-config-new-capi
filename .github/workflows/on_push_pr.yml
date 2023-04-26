@@ -4,7 +4,7 @@ concurrency:
   group: stackhpc-pull-request-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-name: Pull request
+name: Pull request magnum
 'on':
   pull_request:
   push:
