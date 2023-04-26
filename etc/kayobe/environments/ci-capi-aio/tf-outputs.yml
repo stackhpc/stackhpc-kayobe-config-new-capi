@@ -1,0 +1,22 @@
+{
+  "access_cidr": {
+    "sensitive": false,
+    "type": "string",
+    "value": "10.0.0.0/16"
+  },
+  "access_gw": {
+    "sensitive": false,
+    "type": "string",
+    "value": "10.0.0.1"
+  },
+  "access_interface": {
+    "sensitive": false,
+    "type": "string",
+    "value": "ens3"
+  },
+  "access_ip_v4": {
+    "sensitive": false,
+    "type": "string",
+    "value": "10.0.0.133"
+  }
+}

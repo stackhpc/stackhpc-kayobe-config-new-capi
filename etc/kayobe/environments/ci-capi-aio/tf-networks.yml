@@ -1,0 +1,9 @@
+
+admin_oc_net_name: admin
+admin_cidr: "{{ access_cidr.value }}"
+admin_allocation_pool_start: 0.0.0.0
+admin_allocation_pool_end: 0.0.0.0
+admin_gateway: "{{ access_gw.value }}"
+admin_bootproto: dhcp
+admin_ips:
+  controller0: "{{ access_ip_v4.value }}"
