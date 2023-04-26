@@ -47,6 +47,10 @@ on:
         description: Subnet for the all-in-one VM
         type: string
         default: stackhpc-release-subnet
+      vm_volume_size:
+        description: volume size for the all-in-one VM
+        type: number
+        default: 200
       OS_CLOUD:
         description: Name of cloud in clouds.yaml
         type: string
@@ -109,6 +113,7 @@ jobs:
           aio_vm_flavor = "${{ env.VM_FLAVOR }}"
           aio_vm_network = "${{ env.VM_NETWORK }}"
           aio_vm_subnet = "${{ env.VM_SUBNET }}"
+          aio_vm_volume_size = ${{ env.VM_VOLUME_SIZE }}
           EOF
         working-directory: ${{ github.workspace }}/terraform/aio
         env:
@@ -119,6 +124,7 @@ jobs:
           VM_NETWORK: ${{ inputs.vm_network }}
           VM_SUBNET: ${{ inputs.vm_subnet }}
           VM_INTERFACE: ${{ inputs.vm_interface }}
+          VM_VOLUME_SIZE: ${{ inputs.vm_volume_size }}
 
       - name: Terraform Plan
         run: terraform plan
