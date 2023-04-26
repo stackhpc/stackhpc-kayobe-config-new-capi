@@ -15,7 +15,7 @@ jobs:
   build-kayobe-image:
     name: Build Kayobe Image
     uses: ./.github/workflows/stackhpc-build-kayobe-image.yml
-    if: github.repository == 'stackhpc/stackhpc-kayobe-config'
+    if: github.repository == 'stackhpc/stackhpc-kayobe-config-new-capi'
 
   all-in-one-centos-ovs:
     name: aio (CentOS OVS)
