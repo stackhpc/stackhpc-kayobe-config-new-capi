@@ -1,0 +1,30 @@
+---
+
+concurrency:
+  group: stackhpc-pull-request-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+name: Pull request
+'on':
+  pull_request:
+  push:
+    branches: 
+      - main
+jobs:
+
+  build-kayobe-image:
+    name: Build Kayobe Image
+    uses: ./.github/workflows/stackhpc-build-kayobe-image.yml
+    if: github.repository == 'stackhpc/stackhpc-kayobe-config'
+
+  all-in-one-centos-ovs:
+    name: aio (CentOS OVS)
+    needs:
+      - build-kayobe-image
+    uses: ./.github/workflows/stackhpc-capi-all-in-one.yml
+    with:
+      kayobe_image: ${{ needs.build-kayobe-image.outputs.kayobe_image }}
+      neutron_plugin: ovs
+      OS_CLOUD: sms-lab
+    secrets: inherit
+    if: github.repository == 'stackhpc/stackhpc-kayobe-config-new-capi'
