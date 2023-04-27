@@ -313,11 +313,14 @@ jobs:
       
       - name: Get kubeconfig
         run: |
+          IP=$(ansible localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
+          KUBECONFIG=$(ssh $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'cat ~/.kube/config')
           echo "kubeconfig<<EOF" >> $GITHUB_OUTPUT
-          sudo -E docker run -t --rm -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY $KAYOBE_IMAGE /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-command-run.sh --command 'cat ~/.kube/config' -l controllers  >> $GITHUB_OUTPUT
+          echo "$KUBECONFIG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
+          SSH_USERNAME: "${{ inputs.ssh_username }}"
       
       - name: Set kubeconfig
         run: |
