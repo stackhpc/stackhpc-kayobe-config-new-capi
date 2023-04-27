@@ -74,3 +74,5 @@ if ! $KOLLA_OPENSTACK_COMMAND router list | grep -q lb-rtr; then
 
   eval sudo ip r add $SUBNET_CIDR via $ROUTER_IP
 fi
+
+touch /tmp/.init-runonce-mgm

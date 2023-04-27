@@ -87,7 +87,7 @@
     - name: Run aio-magnum-init
       script:
         cmd: scripts/aio-magnum-init.sh
-        creates: /tmp/.init-runonce
+        creates: /tmp/.init-runonce-mgm
       environment:
         KOLLA_OPENSTACK_COMMAND: '{{ venv }}/bin/openstack'
         OS_PROJECT_DOMAIN_NAME: Default
