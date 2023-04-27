@@ -7,6 +7,11 @@
 
 # Do not enable central logging if using Rocky Linux 9. It does not have elasticsearch
 kolla_enable_central_logging: "{{ os_release != '9' }}"
+kolla_enable_barbican: true
+#kolla_enable_cinder: true
+kolla_enable_magnum: true
+kolla_enable_octavia: true
+kolla_enable_neutron_provider_networks: true
 
 ###############################################################################
 # Network configuration.
