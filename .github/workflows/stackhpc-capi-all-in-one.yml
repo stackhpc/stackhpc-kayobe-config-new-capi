@@ -286,11 +286,12 @@ jobs:
         run: |
           pip install --user ansible
           export IP=$(python3 -m ansible adhoc localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
-          echo $KAYOBE_AUTOMATION_SSH_PRIVATE_KEY > ./ssh_key
+          #echo $KAYOBE_AUTOMATION_SSH_PRIVATE_KEY > ./ssh_key
+          #chmod 600 
           echo $IP 
           echo $SSH_USERNAME
           echo YEET
-          export KUBECONFIG=$(ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$IP -i ./ssh_key 'cat ~/.kube/config')
+          export KUBECONFIG=$(ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'cat ~/.kube/config')
           echo "$KUBECONFIG"
           echo "kubeconfig<<EOF" >> $GITHUB_OUTPUT
           echo "$KUBECONFIG" >> $GITHUB_OUTPUT
