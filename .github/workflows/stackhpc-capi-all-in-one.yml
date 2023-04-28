@@ -288,7 +288,7 @@ jobs:
       
       - name: Get kubeconfig
         run: |
-          pip install ansible
+          pip3 install ansible
           export IP=$(ansible localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
           echo $IP 
           echo $SSH_USERNAME
