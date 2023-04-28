@@ -82,7 +82,7 @@ jobs:
       
       - name: install zip
         run: |
-          sudo apt install -y zip unzip
+          sudo apt install -y zip unzip python3-pip
 
       - name: Install terraform
         uses: hashicorp/setup-terraform@v2
@@ -313,6 +313,7 @@ jobs:
       
       - name: Get kubeconfig
         run: |
+          pip install ansible
           IP=$(ansible localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
           KUBECONFIG=$(ssh $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'cat ~/.kube/config')
           echo "kubeconfig<<EOF" >> $GITHUB_OUTPUT
