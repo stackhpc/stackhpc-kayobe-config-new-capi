@@ -290,7 +290,7 @@ jobs:
           echo $IP 
           echo $SSH_USERNAME
           echo YEET
-          export KUBECONFIG=$(ssh $SSH_USERNAME@$IP -i ./ssh_key 'cat ~/.kube/config')
+          export KUBECONFIG=$(ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$IP -i ./ssh_key 'cat ~/.kube/config')
           echo "$KUBECONFIG"
           echo "kubeconfig<<EOF" >> $GITHUB_OUTPUT
           echo "$KUBECONFIG" >> $GITHUB_OUTPUT
