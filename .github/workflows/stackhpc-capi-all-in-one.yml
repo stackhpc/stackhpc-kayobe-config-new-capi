@@ -195,31 +195,6 @@ jobs:
           echo "ssh_key<<EOF" >> $GITHUB_OUTPUT
           cat terraform/aio/id_rsa >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
-      # The same tag may be reused (e.g. pr-123), so ensure we have the latest image.
-      - name: Pull latest Kayobe image
-        run: |
-          sudo docker image pull $KAYOBE_IMAGE
-
-      - name: Host configure
-        run: |
-          sudo -E docker run -t --rm \
-            -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
-            -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
-            $KAYOBE_IMAGE \
-            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-configure.sh
-        env:
-          KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
-
-      # - name: Magnum container build
-      #   run: |
-      #     sudo -E docker run -t --rm \
-      #       -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
-      #       -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
-      #       $KAYOBE_IMAGE \
-      #       /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-container-image-build.sh magnum -vvvv
-      #   env:
-      #     KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
       
       - name: Install management cluster
         run: |
@@ -318,6 +293,7 @@ jobs:
           echo $IP 
           echo $SSH_USERNAME
           export KUBECONFIG=$(ssh $SSH_USERNAME@$IP -i $KAYOBE_AUTOMATION_SSH_PRIVATE_KEY 'cat ~/.kube/config')
+          echo $KUBECONFIG
           echo "kubeconfig<<EOF" >> $GITHUB_OUTPUT
           echo "$KUBECONFIG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -328,6 +304,31 @@ jobs:
       - name: Set kubeconfig
         run: |
           echo $KUBECONFIG > etc/kayobe/environments/$KAYOBE_ENVIRONMENT/kolla/config/magnum/kubeconfig
+
+      # The same tag may be reused (e.g. pr-123), so ensure we have the latest image.
+      - name: Pull latest Kayobe image
+        run: |
+          sudo docker image pull $KAYOBE_IMAGE
+
+      - name: Host configure
+        run: |
+          sudo -E docker run -t --rm \
+            -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
+            -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
+            $KAYOBE_IMAGE \
+            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-configure.sh
+        env:
+          KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
+
+      # - name: Magnum container build
+      #   run: |
+      #     sudo -E docker run -t --rm \
+      #       -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
+      #       -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
+      #       $KAYOBE_IMAGE \
+      #       /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-container-image-build.sh magnum -vvvv
+      #   env:
+      #     KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
 
       - name: Service deploy
         run: |
