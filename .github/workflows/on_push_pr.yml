@@ -12,10 +12,10 @@ name: Pull request magnum
       - 'stackhpc/yoga'
 jobs:
 
-  build-kayobe-image:
-    name: Build Kayobe Image
-    uses: ./.github/workflows/stackhpc-build-kayobe-image.yml
-    if: github.repository == 'stackhpc/stackhpc-kayobe-config-new-capi'
+  # build-kayobe-image:
+  #   name: Build Kayobe Image
+  #   uses: ./.github/workflows/stackhpc-build-kayobe-image.yml
+  #   if: github.repository == 'stackhpc/stackhpc-kayobe-config-new-capi'
 
   all-in-one-centos-ovs:
     name: aio (CentOS OVS)
