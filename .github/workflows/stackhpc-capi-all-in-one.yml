@@ -79,10 +79,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
            submodules: true
-      
-      - name: install zip
-        run: |
-          sudo apt install -y zip unzip python3-pip
 
       - name: Install terraform
         uses: hashicorp/setup-terraform@v2
@@ -288,7 +284,7 @@ jobs:
       
       - name: Get kubeconfig
         run: |
-          install --user ansible
+          pip install --user ansible
           export IP=$(python3 -m ansible localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
           echo $IP 
           echo $SSH_USERNAME
