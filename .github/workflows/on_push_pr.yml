@@ -12,18 +12,18 @@ name: Pull request magnum
       - 'stackhpc/yoga'
 jobs:
 
-  # build-kayobe-image:
-  #   name: Build Kayobe Image
-  #   uses: ./.github/workflows/stackhpc-build-kayobe-image.yml
-  #   if: github.repository == 'stackhpc/stackhpc-kayobe-config-new-capi'
+  build-kayobe-image:
+    name: Build Kayobe Image
+    uses: ./.github/workflows/stackhpc-build-kayobe-image.yml
+    if: github.repository == 'stackhpc/stackhpc-kayobe-config-new-capi'
 
   all-in-one-centos-ovs:
     name: aio (CentOS OVS)
-    #needs:
-    #  - build-kayobe-image
+    needs:
+     - build-kayobe-image
     uses: ./.github/workflows/stackhpc-capi-all-in-one.yml
     with:
-      kayobe_image: somebs #${{ needs.build-kayobe-image.outputs.kayobe_image }}
+      kayobe_image: ${{ needs.build-kayobe-image.outputs.kayobe_image }}
       neutron_plugin: ovs
       OS_CLOUD: sms-lab
     secrets: inherit
