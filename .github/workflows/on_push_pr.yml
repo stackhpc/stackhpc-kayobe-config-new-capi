@@ -19,11 +19,11 @@ jobs:
 
   all-in-one-centos-ovs:
     name: aio (CentOS OVS)
-    needs:
-      - build-kayobe-image
+    #needs:
+    #  - build-kayobe-image
     uses: ./.github/workflows/stackhpc-capi-all-in-one.yml
     with:
-      kayobe_image: ${{ needs.build-kayobe-image.outputs.kayobe_image }}
+      kayobe_image: somebs #${{ needs.build-kayobe-image.outputs.kayobe_image }}
       neutron_plugin: ovs
       OS_CLOUD: sms-lab
     secrets: inherit
