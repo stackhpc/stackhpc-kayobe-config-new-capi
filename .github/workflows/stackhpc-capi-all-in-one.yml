@@ -302,7 +302,6 @@ jobs:
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
           SSH_USERNAME: "${{ inputs.ssh_username }}"
-        shell: bash
       
       - name: Set kubeconfig
         run: |
