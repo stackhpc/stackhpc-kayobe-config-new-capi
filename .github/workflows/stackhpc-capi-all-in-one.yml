@@ -314,8 +314,10 @@ jobs:
       - name: Get kubeconfig
         run: |
           pip install ansible
-          IP=$(ansible localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
-          KUBECONFIG=$(ssh $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'cat ~/.kube/config')
+          export IP=$(ansible localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
+          echo $IP 
+          echo $SSH_USERNAME
+          export KUBECONFIG=$(ssh $SSH_USERNAME@$IP -i $KAYOBE_AUTOMATION_SSH_PRIVATE_KEY 'cat ~/.kube/config')
           echo "kubeconfig<<EOF" >> $GITHUB_OUTPUT
           echo "$KUBECONFIG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
