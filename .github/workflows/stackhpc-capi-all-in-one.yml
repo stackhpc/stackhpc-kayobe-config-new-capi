@@ -205,8 +205,7 @@ jobs:
       - name: Get IP
         id: ip
         run: 
-          export IP=$(python3 -m ansible adhoc localhost -m debug -a "var=access_ip_v4.value" \
-          -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value \ | awk '{print $2}' | tr -d \''"\')
+          export IP=$(python3 -m ansible adhoc localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
           
           echo "ip<<EOF" >> $GITHUB_OUTPUT
           echo $IP >> $GITHUB_OUTPUT
