@@ -198,14 +198,28 @@ jobs:
             -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
             -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
             $KAYOBE_IMAGE \
-            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-configure.sh
+            /stack/kayobe-automation-env/src/kayobe-config/.automation/pi peline/overcloud-host-configure.sh
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
       
-      - name: Transfer management cluster script
-        copy: 
-          src: .automation/scripts/capi-mgmt.sh
-          dest: mgmt.sh
+      - name: Get IP
+        id: ip
+        run: 
+          export IP=$(python3 -m ansible adhoc localhost -m debug -a "var=access_ip_v4.value" \
+          -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value \ | awk '{print $2}' | tr -d \''"\')
+          
+          echo "ip<<EOF" >> $GITHUB_OUTPUT
+          echo $IP >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Transfer management cluster setup script
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ steps.ip.outputs.ip }}
+          username: ${{ inputs.ssh_username }}
+          key: ${{ steps.ssh_key.outputs.ssh_key }}
+          source: .automation/scripts/capi-mgmt.sh
+          target: /home/${{ inputs.ssh_username }}/
 
       - name: Install management cluster
         run: |
@@ -213,19 +227,12 @@ jobs:
             -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
             -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
             $KAYOBE_IMAGE \
-            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-command-run.sh --command 'chmod +x ./mgmt.sh && ./mgmt.sh'  -l controllers --show-output
+            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-command-run.sh --command 'chmod +x ./capi-mgmt.sh && ./capi-mgmt.sh'  -l controllers --show-output
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
 
       - name: Get kubeconfig
         run: |
-          pip install --user ansible
-          export IP=$(python3 -m ansible adhoc localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
-          #echo $KAYOBE_AUTOMATION_SSH_PRIVATE_KEY > ./ssh_key
-          #chmod 600 
-          echo $IP 
-          echo $SSH_USERNAME
-          echo YEET
           export KUBECONFIG=$(ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'sudo cat /etc/rancher/k3s/k3s.yaml')
           echo "$KUBECONFIG"
           echo "kubeconfig<<EOF" >> $GITHUB_OUTPUT
@@ -234,6 +241,7 @@ jobs:
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
           SSH_USERNAME: "${{ inputs.ssh_username }}"
+          IP: ${{ steps.ip.outputs.ip }}
         shell: bash
       
       - name: Set kubeconfig
