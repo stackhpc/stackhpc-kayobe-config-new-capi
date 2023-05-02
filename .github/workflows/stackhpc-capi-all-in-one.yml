@@ -206,8 +206,9 @@ jobs:
         id: ip
         run: 
           export IP=$(python3 -m ansible adhoc localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
+          echo YEET
           echo $IP
-          echo "ip==$(echo $IP)\n" >> $GITHUB_OUTPUT
+          echo "ip=$(echo $IP)\n" >> $GITHUB_OUTPUT
 
       - name: Transfer management cluster setup script
         uses: appleboy/scp-action@v0.1.4
