@@ -217,6 +217,15 @@ jobs:
           key: ${{ steps.ssh_key.outputs.ssh_key }}
           source: .automation/scripts/capi-mgmt.sh
           target: /tmp/
+      
+      - name: ls tmp 
+        run: |
+          ls /tmp
+          ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'sudo ls /tmp'
+        env:
+          SSH_USERNAME: "${{ inputs.ssh_username }}"
+          IP: ${{ steps.ip.outputs.ip }}
+         
 
       - name: Install management cluster
         run: |
