@@ -209,13 +209,19 @@ jobs:
           echo $IP
           echo "ip=$(echo $IP)" >> $GITHUB_OUTPUT
 
+      - name: Copy mgmt script outside of checkout
+        run: |
+          mkdir ../script
+          cp .automation/scripts/capi-mgmt.sh ../script/
+          tar -cvf mgmt_deploy.tar ../script/
+
       - name: Transfer management cluster setup script
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ steps.ip.outputs.ip }}
           username: ${{ inputs.ssh_username }}
           key: ${{ steps.ssh_key.outputs.ssh_key }}
-          source: .automation/scripts/capi-mgmt.sh
+          source: mgmt_deploy.tar
           target: /tmp/
       
       - name: ls tmp 
