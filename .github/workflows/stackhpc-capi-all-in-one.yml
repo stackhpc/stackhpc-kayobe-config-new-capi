@@ -211,9 +211,9 @@ jobs:
 
       - name: Copy mgmt script outside of checkout
         run: |
-          mkdir ../script
-          cp .automation/scripts/capi-mgmt.sh ../script/
-          tar -cvf mgmt_deploy.tar ../script/
+          mkdir ./script
+          cp .automation/scripts/capi-mgmt.sh ./script/
+          tar -cvf mgmt_deploy.tar ./script/
 
       - name: Transfer management cluster setup script
         uses: appleboy/scp-action@v0.1.4
