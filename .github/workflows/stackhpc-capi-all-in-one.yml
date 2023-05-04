@@ -202,14 +202,14 @@ jobs:
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
       
-      - name: Get IP
+      - name: Get IP of AIO
         id: ip
         run: |
           export IP=$(python3 -m ansible adhoc localhost -m debug -a "var=access_ip_v4.value" -e @etc/kayobe/environments/$KAYOBE_ENVIRONMENT/tf-outputs.yml | grep access_ip_v4.value | awk '{print $2}' | tr -d \''"\')
           echo $IP
           echo "ip=$(echo $IP)" >> $GITHUB_OUTPUT
 
-      - name: Copy mgmt script outside of checkout
+      - name: Tar management cluster setup script
         run: |
           mkdir ./script
           cp .automation/scripts/capi-mgmt.sh ./script/
@@ -223,15 +223,6 @@ jobs:
           key: ${{ steps.ssh_key.outputs.ssh_key }}
           source: mgmt_deploy.tar
           target: /tmp/
-      
-      - name: ls tmp 
-        run: |
-          ls /tmp
-          ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'sudo ls /tmp'
-        env:
-          SSH_USERNAME: "${{ inputs.ssh_username }}"
-          IP: ${{ steps.ip.outputs.ip }}
-         
 
       - name: Install management cluster
         run: |
@@ -239,11 +230,12 @@ jobs:
             -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
             -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
             $KAYOBE_IMAGE \
-            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-command-run.sh --command 'sudo tar -xvf /tmp/mgmt_deploy.tar && sudo ls /tmp && ls ./script/ && sudo chmod +x ./script/capi-mgmt.sh && ./script/capi-mgmt.sh'  -l controllers --show-output
+            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-command-run.sh --command 'sudo tar -xvf /tmp/mgmt_deploy.tar && sudo chmod +x ./script/capi-mgmt.sh && ./script/capi-mgmt.sh'  -l controllers --show-output
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
 
       - name: Get kubeconfig
+        id: kubeconfig
         run: |
           export KUBECONFIG=$(ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'sudo cat /etc/rancher/k3s/k3s.yaml')
           echo "$KUBECONFIG"
@@ -260,21 +252,23 @@ jobs:
         run: |
           echo $KUBECONFIG > etc/kayobe/environments/$KAYOBE_ENVIRONMENT/kolla/config/magnum/kubeconfig
           cat etc/kayobe/environments/$KAYOBE_ENVIRONMENT/kolla/config/magnum/kubeconfig
+        env: 
+          KUBECONFIG: ${{ steps.kubeconfig.outputs.kubeconfig }}
 
       # The same tag may be reused (e.g. pr-123), so ensure we have the latest image.
       - name: Pull latest Kayobe image
         run: |
           sudo docker image pull $KAYOBE_IMAGE
 
-      # - name: Magnum container build
-      #   run: |
-      #     sudo -E docker run -t --rm \
-      #       -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
-      #       -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
-      #       $KAYOBE_IMAGE \
-      #       /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-container-image-build.sh magnum -vvvv
-      #   env:
-      #     KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
+      - name: Magnum container build
+        run: |
+          sudo -E docker run -t --rm \
+            -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
+            -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
+            $KAYOBE_IMAGE \
+            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-container-image-build.sh magnum -vvvv
+        env:
+          KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
 
       - name: Service deploy
         run: |
