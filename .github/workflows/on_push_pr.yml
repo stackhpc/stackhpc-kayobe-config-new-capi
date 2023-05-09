@@ -24,7 +24,7 @@ jobs:
     uses: ./.github/workflows/stackhpc-capi-all-in-one.yml
     with:
       kayobe_image: ${{ needs.build-kayobe-image.outputs.kayobe_image }}
-      neutron_plugin: ovs
+      neutron_plugin: ovn
       OS_CLOUD: sms-lab
     secrets: inherit
     if: github.repository == 'stackhpc/stackhpc-kayobe-config-new-capi'
