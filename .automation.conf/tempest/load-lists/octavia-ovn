@@ -1,13 +1,2 @@
 octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_http_source_ip_port_listener_CRUD[id-807a421e-5e99-4556-b0eb-512d39b25eac]
-octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_udp_source_ip_listener_CRUD[id-7830aba8-12ca-40d9-9d9b-a63f7a43b287]
-octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_http_source_ip_listener_CRUD[id-b2ae8604-7a4f-477c-9658-fac27734671a]
-octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_tcp_source_ip_port_listener_CRUD[id-6211f8ad-622d-404d-b199-8c2eb55ab340]
-octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_udp_source_ip_port_listener_CRUD[id-3f9a2de9-5012-437d-a907-a25e1f68ccfb]
-octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_tcp_source_ip_listener_CRUD[id-0ad3fdee-e8c2-4c44-9690-b8a838fbc7a5]
-octavia_tempest_plugin.tests.scenario.v2.test_traffic_ops.TrafficOperationsScenarioTest.test_source_ip_port_tcp_traffic[id-60108f30-d870-487c-ab96-8d8a9b587b94]
-octavia_tempest_plugin.tests.scenario.v2.test_traffic_ops.TrafficOperationsScenarioTest.test_source_ip_port_http_traffic[id-a446585b-5651-40ce-a4db-cb2ab4d37c03]
-octavia_tempest_plugin.tests.scenario.v2.test_traffic_ops.TrafficOperationsScenarioTest.test_source_ip_http_traffic[id-881cc3e9-a011-4043-b0e3-a6185f736053]
-octavia_tempest_plugin.tests.scenario.v2.test_traffic_ops.TrafficOperationsScenarioTest.test_source_ip_udp_traffic[id-be9e6ef2-7840-47d7-9315-cdb1e897b202]
-octavia_tempest_plugin.tests.scenario.v2.test_traffic_ops.TrafficOperationsScenarioTest.test_source_ip_port_udp_traffic[id-a67dfa58-6953-4a0f-8a65-3f153b254c98]
-octavia_tempest_plugin.tests.scenario.v2.test_traffic_ops.TrafficOperationsScenarioTest.test_source_ip_tcp_traffic[id-4568db0e-4243-4191-a822-9d327a55fa64]
 
