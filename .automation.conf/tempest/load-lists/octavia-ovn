@@ -1,2 +1,2 @@
-octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_http_source_ip_port_listener_CRUD[id-807a421e-5e99-4556-b0eb-512d39b25eac]
-
+octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_tcp_source_ip_port_listener_CRUD[id-6211f8ad-622d-404d-b199-8c2eb55ab340]
+octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_udp_source_ip_port_listener_CRUD[id-3f9a2de9-5012-437d-a907-a25e1f68ccfb]
