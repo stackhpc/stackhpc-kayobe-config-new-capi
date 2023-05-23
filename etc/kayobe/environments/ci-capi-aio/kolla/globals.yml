@@ -18,6 +18,10 @@ es_heap_size: 1g
 # Increase Grafana timeout
 grafana_start_first_node_retries: 20
 
+octavia_logging_debug: true
+
+neutron_ovn_distributed_fip: "yes"
+
 ##############################################################################
 # Octavia networking
 octavia_amp_network:
