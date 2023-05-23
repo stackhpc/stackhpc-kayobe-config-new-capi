@@ -35,6 +35,7 @@ if ! $KOLLA_OPENSTACK_COMMAND image list | grep -q ubuntu-2004-kube-v1.26.0; the
   --image ubuntu-2004-kube-v1.26.3 \
   --external-network public1 \
   --label kube_tag=v1.26.3 \
+  --label octavia_provider=ovn \
   --master-flavor ds2G20 \
   --flavor ds2G20 \
   --public \
