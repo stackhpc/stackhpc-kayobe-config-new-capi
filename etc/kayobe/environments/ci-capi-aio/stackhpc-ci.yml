@@ -3,7 +3,7 @@
 # Kolla configuration.
 
 # Docker namespace to use for Kolla images. Default is 'kolla'.
-#kolla_docker_namespace: stackhpc-dev
+kolla_docker_namespace: stackhpc-dev
 
 # Do not enable central logging if using Rocky Linux 9. It does not have elasticsearch
 kolla_enable_central_logging: "{{ os_release != '9' }}"
