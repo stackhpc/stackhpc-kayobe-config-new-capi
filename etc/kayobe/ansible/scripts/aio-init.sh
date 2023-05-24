@@ -139,4 +139,9 @@ if ! $KOLLA_OPENSTACK_COMMAND flavor list | grep -q m1.tiny; then
     $KOLLA_OPENSTACK_COMMAND flavor create --id 5 --ram 16384 --disk 160 --vcpus 8 m1.xlarge
 fi
 
+# Configure IP routing and NAT to allow VMs to reach the outside world
+iface=$(ip route | awk '$1 == "default" {print $5; exit}')
+sudo iptables -A POSTROUTING -t nat -o $iface -j MASQUERADE
+sudo sysctl -w net.ipv4.conf.all.forwarding=1
+
 touch /tmp/.init-runonce
