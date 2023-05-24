@@ -14,9 +14,10 @@ fi
 if ! $KOLLA_OPENSTACK_COMMAND flavor list | grep -q ds2G20; then
   echo Creating flavor ds2G20 for ubuntu image
   $KOLLA_OPENSTACK_COMMAND flavor create ds2G20 --ram 2048 --disk 20 --id d5 --vcpus 2 --public
+  $KOLLA_OPENSTACK_COMMAND flavor create ds4G20 --ram 4096 --disk 20 --id d6 --vcpus 4 --public
 fi
 
-
+$KOLLA_OPENSTACK_COMMAND flavor create ds2G20 --ram 2048 --disk 20 --id d5 --vcpus 2 --public
 if ! $KOLLA_OPENSTACK_COMMAND image list | grep -q ubuntu-2004-kube-v1.26.0; then
   echo Downloading ubuntu k8s image..
 
@@ -36,8 +37,9 @@ if ! $KOLLA_OPENSTACK_COMMAND image list | grep -q ubuntu-2004-kube-v1.26.0; the
   --external-network public1 \
   --label kube_tag=v1.26.3 \
   --label octavia_provider=ovn \
-  --master-flavor ds2G20 \
-  --flavor ds2G20 \
+  --label dns_nameserver=8.8.8.8 \
+  --master-flavor ds4G20 \
+  --flavor ds4G20 \
   --public \
   --master-lb-enabled
   
