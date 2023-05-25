@@ -30,7 +30,7 @@ if [ ! -z ${KAYOBE_ENVIRONMENT:+x} ]; then
 
   if [[ "$KAYOBE_ENVIRONMENT" =~ "ci-capi-aio" ]]; then
     export TEMPEST_CONCURRENCY=1
-    export KAYOBE_AUTOMATION_TEMPEST_LOADLIST=octavia-ovn
+    export KAYOBE_AUTOMATION_TEMPEST_LOADLIST=magnum
   fi
 
 fi
