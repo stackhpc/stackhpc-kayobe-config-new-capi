@@ -1,0 +1,3 @@
+magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_list_sign_delete_clusters[id-44158a8c-a856-11e9-9382-00224d6b7bc1,positive,slow]
+octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_tcp_source_ip_port_listener_CRUD[id-6211f8ad-622d-404d-b199-8c2eb55ab340]
+octavia_tempest_plugin.tests.scenario.v2.test_listener.ListenerScenarioTest.test_udp_source_ip_port_listener_CRUD[id-3f9a2de9-5012-437d-a907-a25e1f68ccfb]
