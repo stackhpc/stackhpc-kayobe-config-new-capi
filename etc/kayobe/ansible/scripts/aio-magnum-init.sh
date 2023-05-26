@@ -17,7 +17,6 @@ if ! $KOLLA_OPENSTACK_COMMAND flavor list | grep -q ds2G20; then
   $KOLLA_OPENSTACK_COMMAND flavor create ds4G20 --ram 4096 --disk 20 --id d6 --vcpus 4 --public
 fi
 
-$KOLLA_OPENSTACK_COMMAND flavor create ds2G20 --ram 2048 --disk 20 --id d5 --vcpus 2 --public
 if ! $KOLLA_OPENSTACK_COMMAND image list | grep -q ubuntu-2004-kube-v1.26.0; then
   echo Downloading ubuntu k8s image..
 
