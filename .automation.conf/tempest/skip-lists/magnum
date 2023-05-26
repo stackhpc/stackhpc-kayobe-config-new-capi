@@ -1,0 +1,1 @@
+magnum_tempest_plugin.tests.api.v1.test_cluster.ClusterTest.test_create_cluster_with_zero_nodes[id-262eb132-a857-11e9-9382-00224d6b7bc1,positive,slow]: "Test is invalid (skipped upstream)" 
