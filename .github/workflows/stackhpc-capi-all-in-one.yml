@@ -237,23 +237,16 @@ jobs:
       - name: Get kubeconfig
         id: kubeconfig
         run: |
-          export KUBECONFIG=$(ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$IP -i terraform/aio/id_rsa 'sudo cat /etc/rancher/k3s/k3s.yaml')
-          echo "$KUBECONFIG"
-          echo "kubeconfig<<EOF" >> $GITHUB_OUTPUT
-          echo "$KUBECONFIG" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          scp -i terraform/aio/id_rsa $SSH_USERNAME@$IP:/etc/rancher/k3s/k3s.yaml .
         env:
-          KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
           SSH_USERNAME: "${{ inputs.ssh_username }}"
           IP: ${{ steps.ip.outputs.ip }}
         shell: bash
       
       - name: Set kubeconfig
         run: |
-          echo $KUBECONFIG > etc/kayobe/environments/$KAYOBE_ENVIRONMENT/kolla/config/magnum/kubeconfig
+          cp k3s.yaml etc/kayobe/environments/$KAYOBE_ENVIRONMENT/kolla/config/magnum/kubeconfig
           cat etc/kayobe/environments/$KAYOBE_ENVIRONMENT/kolla/config/magnum/kubeconfig
-        env: 
-          KUBECONFIG: ${{ steps.kubeconfig.outputs.kubeconfig }}
 
       # The same tag may be reused (e.g. pr-123), so ensure we have the latest image.
       - name: Pull latest Kayobe image
