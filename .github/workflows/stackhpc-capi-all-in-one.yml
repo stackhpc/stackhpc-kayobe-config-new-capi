@@ -237,7 +237,7 @@ jobs:
       - name: Get kubeconfig
         id: kubeconfig
         run: |
-          ssh -i terraform/aio/id_rsa $SSH_USERNAME@$IP 'sudo chown $SSH_USERNAME /etc/rancher/k3s/k3s.yaml'
+          ssh -i terraform/aio/id_rsa $SSH_USERNAME@$IP "sudo chown $SSH_USERNAME /etc/rancher/k3s/k3s.yaml"
           scp -i terraform/aio/id_rsa $SSH_USERNAME@$IP:/etc/rancher/k3s/k3s.yaml .
         env:
           SSH_USERNAME: "${{ inputs.ssh_username }}"
