@@ -253,9 +253,6 @@ jobs:
       - name: Pull latest Kayobe image
         run: |
           sudo docker image pull $KAYOBE_IMAGE
-      
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
 
       - name: Magnum container build
         run: |
