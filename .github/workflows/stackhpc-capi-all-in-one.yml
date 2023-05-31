@@ -233,6 +233,16 @@ jobs:
             /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-command-run.sh --command 'sudo tar -xvf /tmp/mgmt_deploy.tar && sudo chmod +x ./script/capi-mgmt.sh && ./script/capi-mgmt.sh'  -l controllers --show-output
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
+      
+      - name: Check mgmt cluster 
+        run: |
+          sudo -E docker run -t --rm \
+            -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
+            -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
+            $KAYOBE_IMAGE \
+            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-command-run.sh --command 'kubectl get ns'  -l controllers --show-output
+        env:
+          KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
 
       - name: Get kubeconfig
         id: kubeconfig
@@ -271,6 +281,16 @@ jobs:
             -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
             $KAYOBE_IMAGE \
             /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-service-deploy.sh
+        env:
+          KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
+      
+      - name: Check magnum container 
+        run: |
+          sudo -E docker run -t --rm \
+            -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
+            -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
+            $KAYOBE_IMAGE \
+            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-host-command-run.sh --command 'sudo docker exec -t magnum_conductor bash -c "kubectl --kubeconfig /etc/magnum/kubeconfig get ns"'  -l controllers --show-output
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
 
