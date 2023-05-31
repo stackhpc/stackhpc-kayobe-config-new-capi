@@ -18,7 +18,7 @@ jobs:
     if: github.repository == 'stackhpc/stackhpc-kayobe-config-new-capi'
 
   all-in-one-centos-ovs:
-    name: aio (CentOS OVS)
+    name: aio (CentOS OVN)
     needs:
      - build-kayobe-image
     uses: ./.github/workflows/stackhpc-capi-all-in-one.yml
