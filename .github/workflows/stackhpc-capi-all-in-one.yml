@@ -30,7 +30,7 @@ on:
       vm_image:
         description: Image for the all-in-one VM
         type: string
-        default: bb8c0a34-533f-42fb-a49b-3461e677f3f6
+        default: b8b081f7-28b8-4de4-a8cc-46a8efe33ae5 #bb8c0a34-533f-42fb-a49b-3461e677f3f6
       vm_interface:
         description: Default network interface name
         type: string
