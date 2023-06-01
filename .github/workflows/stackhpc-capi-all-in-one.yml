@@ -223,6 +223,9 @@ jobs:
           key: ${{ steps.ssh_key.outputs.ssh_key }}
           source: mgmt_deploy.tar
           target: /tmp/
+      
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
 
       - name: Install management cluster
         run: |
