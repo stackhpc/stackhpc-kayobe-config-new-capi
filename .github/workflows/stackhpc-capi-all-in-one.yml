@@ -224,8 +224,13 @@ jobs:
           source: mgmt_deploy.tar
           target: /tmp/
       
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      - name: cat ssh key 
+        run: echo $KAYOBE_AUTOMATION_SSH_PRIVATE_KEY
+        env:
+          KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
+      
+      - name: sleep 
+        run: sleep 20m
 
       - name: Install management cluster
         run: |
