@@ -223,14 +223,6 @@ jobs:
           key: ${{ steps.ssh_key.outputs.ssh_key }}
           source: mgmt_deploy.tar
           target: /tmp/
-      
-      - name: cat ssh key 
-        run: echo $KAYOBE_AUTOMATION_SSH_PRIVATE_KEY
-        env:
-          KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
-      
-      - name: sleep 
-        run: sleep 20m
 
       - name: Install management cluster
         run: |
@@ -252,7 +244,7 @@ jobs:
           IP: ${{ steps.ip.outputs.ip }}
         shell: bash
 
-      - name: Check mgmt cluster 
+      - name: Check mgmt cluster has installed correctly
         run: |
           sudo -E docker run -t --rm \
             -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
@@ -278,7 +270,7 @@ jobs:
             -v $(pwd):/stack/kayobe-automation-env/src/kayobe-config \
             -e KAYOBE_ENVIRONMENT -e KAYOBE_VAULT_PASSWORD -e KAYOBE_AUTOMATION_SSH_PRIVATE_KEY \
             $KAYOBE_IMAGE \
-            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-container-image-build.sh magnum -vvvv
+            /stack/kayobe-automation-env/src/kayobe-config/.automation/pipeline/overcloud-container-image-build.sh magnum
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
 
@@ -292,6 +284,7 @@ jobs:
         env:
           KAYOBE_AUTOMATION_SSH_PRIVATE_KEY: ${{ steps.ssh_key.outputs.ssh_key }}
       
+      #can be removed after debugging
       - name: Check magnum container 
         run: |
           sudo -E docker run -t --rm \
